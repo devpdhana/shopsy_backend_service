@@ -12,6 +12,23 @@ model User {
   otp_expires DateTime?
   is_verified Boolean   @default(false)
 
+  stores Store[]
+
+  created_at  DateTime @default(now())
+  created_by  String?
+  modified_at DateTime @updatedAt
+  modified_by String?
+}
+
+model Store {
+  store_id String @id @default(uuid())
+  store_name String
+  store_description String
+  store_theme_color String?
+
+  user_id String
+  user User @relation(fields: [user_id], references: [user_id])
+  
   created_at  DateTime @default(now())
   created_by  String?
   modified_at DateTime @updatedAt
