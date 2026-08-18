@@ -43,4 +43,17 @@ authentication_router.get("/refresh",async(req: Request, res: Response)=>{
         })
     }
 })
+authentication_router.post("/verify",async(req: Request, res: Response)=>{
+    try {
+        const {email,verify_code} = req.body;
+        const response = await auth_service.verify_code(Number(verify_code),email);
+        res.status(response!.status).json(response);
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            data: null,
+            message: `Internal server errror ${error}`
+        })
+    }
+})
 export default authentication_router
