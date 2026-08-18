@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs";
 import generate_token from "../helpers/jwt";
 import jwt from 'jsonwebtoken'
 import { TokenPayload } from "../dtos/jwt";
+import { generate_otp } from "../helpers/otp";
+import { send_email } from "./email_service";
 
 const create_user_record = async (email: string, password: string) => {
     try {
@@ -19,7 +21,9 @@ const create_user_record = async (email: string, password: string) => {
             }
             return in_valid_data;
         }
-        const user = await auth_repo.create_user(email, hashed_password, user_name);
+        const verify_code = generate_otp()
+        const user = await auth_repo.create_user(email, hashed_password, user_name, verify_code!);
+        await send_email(email,"Verification Code", `<h1> ${verify_code} </h1>`);
         const user_response: api_response_dto<signup_response_dto> = {
             data: {
                 email: user.email,
@@ -103,4 +107,28 @@ const refresh_tokens = async(refresh_token: string) => {
     }
 }
 
-export default {create_user_record, signin_user, refresh_tokens}
+
+const verify_code = async(verify_code : number, email: string)=>{
+    try {
+        const user = await auth_repo.get_user_by_email(email);
+        if (user?.otp == verify_code && user.otp_expires! <= new Date(Date.now())){
+            const response : api_response_dto<boolean> = {
+                data: true,
+                status : 200,
+                message : "Otp verified successfully"
+            }
+            return response;
+        }else {
+            const response : api_response_dto<boolean> = {
+                data: true,
+                status : 401,
+                message : "Otp invalid or exprid"
+            }
+            return response;
+        }
+    } catch (error) {
+        
+    }
+}
+
+export default {create_user_record, signin_user, refresh_tokens, verify_code}
