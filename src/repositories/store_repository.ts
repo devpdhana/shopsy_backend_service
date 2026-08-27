@@ -44,7 +44,11 @@ const update_store = async (
     store_id: string,
     store_name: string,
     store_description: string,
-    store_theme_color: string
+    store_theme_color: string,
+    sub_domain: string,
+    social_links: string[],
+    currency: string,
+    is_published: boolean
 ) => {
     try {
         const response = await prisma.store.update({
@@ -53,6 +57,10 @@ const update_store = async (
                 store_name,
                 store_description,
                 store_theme_color,
+                sub_domain,
+                social_links,
+                currency,
+                is_published
             },
         });
         return response;

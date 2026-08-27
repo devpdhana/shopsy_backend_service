@@ -18,6 +18,10 @@ const create_store_service = async (
                 store_description: store.store_description,
                 store_theme_color: store.store_theme_color,
                 user_id: store.user_id,
+                sub_domain:store.sub_domain??"",
+                currency: store.currency,
+                is_published: store.is_published,
+                social_links: store.social_links,
                 created_at: store.created_at,
                 modified_at: store.modified_at,
             },
@@ -42,6 +46,10 @@ const get_stores_by_user_service = async (user_id: string, pagination: {skip: nu
                     store_description: store.store_description,
                     store_theme_color: store.store_theme_color,
                     user_id: store.user_id,
+                    sub_domain: store.sub_domain??"",
+                    social_links: store.social_links,
+                    currency: store.currency,
+                    is_published: store.is_published,
                     created_at: store.created_at,
                     modified_at: store.modified_at,
                 })),
@@ -74,6 +82,10 @@ const get_store_by_id_service = async (store_id: string) => {
                 store_name: store.store_name,
                 store_description: store.store_description,
                 store_theme_color: store.store_theme_color,
+                sub_domain: store.sub_domain??"",
+                social_links: store.social_links,
+                currency: store.currency,
+                is_published: store.is_published,
                 user_id: store.user_id,
                 created_at: store.created_at,
                 modified_at: store.modified_at,
@@ -91,7 +103,11 @@ const update_store_service = async (
     store_id: string,
     store_name: string,
     store_description: string,
-    store_theme_color: string
+    store_theme_color: string,
+    sub_domain: string,
+    social_links: string[],
+    currency: string,
+    is_published: boolean
 ) => {
     try {
         const store = await store_repo.get_store_by_id(store_id);
@@ -103,13 +119,17 @@ const update_store_service = async (
             };
             return response;
         }
-        const updated_store = await store_repo.update_store(store_id, store_name, store_description, store_theme_color);
+        const updated_store = await store_repo.update_store(store_id, store_name, store_description, store_theme_color, sub_domain, social_links, currency, is_published);
         const response: api_response_dto<store_response_dto> = {
             data: {
                 store_id: updated_store.store_id,
                 store_name: updated_store.store_name,
                 store_description: updated_store.store_description,
                 store_theme_color: updated_store.store_theme_color,
+                sub_domain: updated_store.sub_domain??"",
+                social_links: updated_store.social_links,
+                currency: updated_store.currency,
+                is_published: updated_store.is_published,
                 user_id: updated_store.user_id,
                 created_at: updated_store.created_at,
                 modified_at: updated_store.modified_at,

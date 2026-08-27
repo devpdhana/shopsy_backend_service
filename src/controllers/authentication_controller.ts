@@ -6,13 +6,15 @@ const authentication_router = express.Router();
 authentication_router.post("/signup",async(req: Request, res: Response)=>{
     try {
         const {email,password} = req.body;
+        console.log(email)
+        console.log(password)
         const response = await auth_service.create_user_record(email,password);
         res.status(response.status).json(response);
     } catch (error) {
         res.status(500).json({
             status: 500,
             data: null,
-            message: "Internal server errror"
+            message: `Internal server errror ${error}` 
         })
     }
 })

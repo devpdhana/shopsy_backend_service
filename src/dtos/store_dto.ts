@@ -6,4 +6,8 @@ export interface store_response_dto {
     user_id: string
     created_at: Date
     modified_at: Date
+    currency? : string
+    social_links? : string[]
+    sub_domain : string
+    is_published :boolean
 }

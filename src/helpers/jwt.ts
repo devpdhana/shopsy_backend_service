@@ -3,7 +3,7 @@ import jwt, { SignOptions } from 'jsonwebtoken'
 const generate_token = async(user_id: string, exp: SignOptions["expiresIn"])=>{
     try {
         const token =  jwt.sign({
-            "sub":"sigin",
+            "sub":user_id,
             "user":user_id
         },
         process.env.JWT_SECRET!,

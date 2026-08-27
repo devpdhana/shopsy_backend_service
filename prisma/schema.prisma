@@ -21,14 +21,18 @@ model User {
 }
 
 model Store {
-  store_id String @id @default(uuid())
-  store_name String
+  store_id          String   @id @default(uuid())
+  store_name        String
   store_description String
   store_theme_color String?
+  sub_domain        String?
+  social_links      String[]
+  currency          String   @default("INR")
+  is_published      Boolean  @default(false)
 
   user_id String
-  user User @relation(fields: [user_id], references: [user_id])
-  
+  user    User   @relation(fields: [user_id], references: [user_id])
+
   created_at  DateTime @default(now())
   created_by  String?
   modified_at DateTime @updatedAt

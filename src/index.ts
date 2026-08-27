@@ -4,10 +4,16 @@ import authentication_router from './controllers/authentication_controller';
 import store_router from './controllers/store_controller';
 import cookie_parse from 'cookie-parser'
 import authenticate from './helpers/middlewares/auth.middleware';
+import cors from 'cors'
 dotenv.config();
 
 
 const app = express()
+app.use(cors({
+    origin:"*",
+    methods:["GET","POST","PUT","DELETE"],
+    credentials: true
+}))
 app.use(express.json())
 app.use(cookie_parse())
 app.use("/auth", authentication_router)

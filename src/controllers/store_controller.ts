@@ -28,6 +28,7 @@ store_router.post("/", async (req: Request, res: Response) => {
 
 store_router.get("/user", async (req: Request, res: Response) => {
     try {
+        console.log(req.payload)
         const user_id = req.payload?.user || "";
         const pagination: {skip: number, limit: number} = {
             limit: Number(req.query.limit) || 10,
@@ -61,12 +62,16 @@ store_router.get("/:store_id", async (req: Request, res: Response) => {
 store_router.put("/:store_id", async (req: Request, res: Response) => {
     try {
         const { store_id } = req.params as { store_id: string };
-        const { store_name, store_description, store_theme_color } = req.body;
+        const { store_name, store_description, store_theme_color, sub_domain, social_links, currency, is_published } = req.body;
         const response = await store_service.update_store_service(
             store_id,
             store_name,
             store_description,
-            store_theme_color
+            store_theme_color,
+            sub_domain,
+            social_links,
+            currency,
+            is_published
         );
         res.status(response.status).json(response);
     } catch (error) {

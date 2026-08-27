@@ -34,7 +34,7 @@ const create_user_record = async (email: string, password: string) => {
                 modified_at: user.modified_at,
                 modified_by: user.modified_by ?? ""
             },
-            status: 200,
+            status: 201,
             message: "User created successfully"
         }
         return user_response
